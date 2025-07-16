@@ -3,6 +3,7 @@ from langgraph.graph import MessagesState
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 
+
 # Tool
 def multiply(a: int, b: int) -> int:
     """Multiplies a and b.
@@ -13,13 +14,16 @@ def multiply(a: int, b: int) -> int:
     """
     return a * b
 
+
 # LLM with bound tool
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4.1-nano-2025-04-14")
 llm_with_tools = llm.bind_tools([multiply])
+
 
 # Node
 def tool_calling_llm(state: MessagesState):
     return {"messages": [llm_with_tools.invoke(state["messages"])]}
+
 
 # Build graph
 builder = StateGraph(MessagesState)
